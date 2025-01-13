@@ -7,7 +7,12 @@ const players = [
 const calcBalance = players.reduce((acc, player) => acc + player.balance, 0);
 console.log(calcBalance);
 // Task 2
-const findFriends = players.filter((player) => player.friends.includes("venom")).map((player) => player.name)
+const findFriends = players.reduce((acc, player) => {
+  if (player.friends.includes("venom")) {
+    acc.push(player.name)
+  }
+  return acc
+} ,[])
 console.log(findFriends)
 // Task 3
 const copyPlayers = [...players]
@@ -15,15 +20,18 @@ const copyPlayers = [...players]
 const sortFriends = copyPlayers.sort((prevFriend, nextFriend) => prevFriend.friends.length - nextFriend.friends.length).map((player) => player.name)
 console.log(sortFriends);
 // Task 4
-let allSkills = [];
-const findSkills = players.forEach((player) => allSkills.push(...player.skills));
+const findSkills = players.reduce((acc, player) => {
+  acc.push(...player.skills);
+  return acc
+} ,[]);
 
-let uniqueSkills = [];
-allSkills.forEach((skill) => {
-  if (!uniqueSkills.includes(skill)) {
-    uniqueSkills.push(skill);
+
+const filteredSkills = findSkills.reduce((acc, skill) => {
+  if (acc.includes(skill)) {
+    return acc
+  } else {
+    return [...acc, skill]
   }
-});
-
-uniqueSkills.sort();
-console.log(uniqueSkills);
+} ,[])
+filteredSkills.sort();
+console.log(filteredSkills);
